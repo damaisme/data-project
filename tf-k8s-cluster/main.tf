@@ -21,8 +21,8 @@ variable "nodes" {
 resource "libvirt_volume" "k8s_disk" {
   count  = length(var.nodes)
   name   = "${var.nodes[count.index].name}.qcow2"
-  pool   = "default"
-  source = "/data/isos/ubuntu-jammy.qcow2"
+  pool   = "vms"
+  source = "/data/isos/ubuntu-jammy.img"
   format = "qcow2"
 }
 
