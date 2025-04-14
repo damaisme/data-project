@@ -6,11 +6,6 @@ resource "libvirt_network" "data_network" {
 
   dhcp {
     enabled = true
-
-    dhcp_range {
-      start = "15.1.1.2"
-      end   = "15.1.1.200"
-    }
   }
 }
 
