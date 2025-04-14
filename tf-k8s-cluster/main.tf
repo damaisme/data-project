@@ -35,8 +35,8 @@ resource "libvirt_cloudinit_disk" "cloudinit" {
 resource "libvirt_domain" "k8s_node" {
   count  = length(var.nodes)
   name   = var.nodes[count.index].name
-  memory = 4096
-  vcpu   = 2
+  memory = 8192
+  vcpu   = 4
 
   disk {
     volume_id = libvirt_volume.k8s_disk[count.index].id
