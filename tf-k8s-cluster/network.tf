@@ -1,5 +1,5 @@
 resource "libvirt_network" "data_network" {
-  name      = "data-net"
+  name      = "dama-data-net"
   mode      = "nat"
   domain    = "data.local"
   addresses = ["15.1.1.0/24"]
@@ -8,7 +8,7 @@ resource "libvirt_network" "data_network" {
     enabled = true
 
     dhcp_range {
-      start = "15.1.1.100"
+      start = "15.1.1.2"
       end   = "15.1.1.200"
     }
   }

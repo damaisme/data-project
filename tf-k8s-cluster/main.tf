@@ -4,9 +4,9 @@ provider "libvirt" {
 
 variable "nodes" {
   default = [
-    { name = "node-1", ip = "15.1.1.11" },
-    { name = "node-2", ip = "15.1.1.12" },
-    { name = "node-3", ip = "15.1.1.13" }
+    { name = "dama-node-1", ip = "15.1.1.11" },
+    { name = "dama-node-2", ip = "15.1.1.12" },
+    { name = "dama-node-3", ip = "15.1.1.13" }
   ]
 }
 
@@ -35,7 +35,7 @@ resource "libvirt_domain" "k8s_node" {
   }
 
   network_interface {
-    network_name = "default"
+    network_name = "dama-data-net"
     addresses    = [var.nodes[count.index].ip]
   }
 
