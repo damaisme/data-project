@@ -1,0 +1,51 @@
+#cloud-config
+hostname: dama-node-1
+users:
+  - name: ubuntu
+    groups: sudo
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDSuwWPS+BO+WjKERDYkj2MLp5+D30BBHR7fxVGvkK8AWZyCfByv3wyjzmSaie3f/4v5MWUzoAEZBbLqrIFuFMsZYDJN3wGRhx2tycAhuaRFg+s4fLJk0w3AY+2KgZOocBKNQQBEs2RosrDzpeEop153CgeYp78MNOCQF4enP1C7xwlxDNsTQ0H3+Ee43jeywT1cZpkKGxh2My1uYKkuuTUj4SdwVHTFgZadDnNPlnPdglX0hV6pIkjicBTir/p0PMgPxKWgYAFf88mPPo+SFn+EUEnyRjeVNsDH95jOXPIN2t9uiPHj9c866uMSnBom/Tbi6PRVaE1BKnIYC+Qp9N263ZAAdDvlrlpsM4A6pP0oZj/3P7qAAPpjZjBoIzQmRMJ9geflk242rwXqmhVfprq1aqQOIHxW1wMQMCb2hhn708wZd8EQVtSaDdmO28odRRUar7/G1jk92UR0yPrxMWCVe+0KyuIipPicGrdms/JhLW8JQdW2xpk2Gj8M6iqGHE= root@labms1.boer.id
+package_update: true
+packages:
+  - containerd
+  - curl
+  - apt-transport-https
+  - ca-certificates
+
+write_files:
+  - path: /etc/sysctl.d/99-k8s.conf
+    content: |
+      net.ipv4.ip_forward=1
+      net.bridge.bridge-nf-call-iptables=1
+      net.bridge.bridge-nf-call-ip6tables=1
+
+runcmd:
+  - |
+    modprobe overlay
+    modprobe br_netfilter
+    sysctl --system
+
+    echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    apt-get update
+    apt-get install -y kubelet kubeadm kubectl
+    apt-mark hold kubelet kubeadm kubectl
+
+    systemctl enable containerd
+    systemctl start containerd
+
+network:
+  version: 2
+  ethernets:
+    eth0:
+      dhcp4: false
+      addresses:
+        - 15.1.1.11/24  # Static IP untuk node-1
+      gateway4: 15.1.1.1
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 8.8.4.4
+
