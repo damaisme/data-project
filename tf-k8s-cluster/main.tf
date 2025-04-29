@@ -22,7 +22,7 @@ resource "libvirt_volume" "k8s_disk" {
   count  = length(var.nodes)
   name   = "${var.nodes[count.index].name}.qcow2"
   pool   = "vms"
-  base_volume_name = "ubuntu-jammy.img"
+  base_volume_name = "ubuntu-noble.img"
   base_volume_pool = "isos"
   format = "qcow2"
   size   = "107374182400"
