@@ -14,6 +14,7 @@ crash.log
 
 # Ignore .terraform directory (modules & provider plugins)
 .terraform/
+*.terraform/
 
 # Ignore override files
 override.tf
