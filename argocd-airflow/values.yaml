@@ -1,4 +1,11 @@
 executor: KubernetesExecutor
+createUserJob:
+  useHelmHooks: false
+  applyCustomEnv: false
+migrateDatabaseJob:
+  useHelmHooks: false
+  applyCustomEnv: false
+
 postgresql:
   persistence:
     enabled: true
