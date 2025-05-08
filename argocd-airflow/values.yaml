@@ -1,1 +1,23 @@
 executor: KubernetesExecutor
+postgresql:
+  persistence:
+    enabled: true
+    size: 8Gi  # Ukuran disk untuk PostgreSQL
+    storageClass: nfs  # StorageClass yang digunakan (ganti dengan sesuai kebutuhan)
+
+redis:
+  persistence:
+    enabled: true
+    size: 1Gi  # Ukuran disk untuk Redis
+    storageClass: nfs  # StorageClass untuk Redis (ganti dengan sesuai kebutuhan)
+
+airflow:
+  persistence:
+    enabled: true
+    logs:
+      enabled: true  # Enable persistent logs
+      size: 5Gi  # Ukuran disk untuk logs
+      storageClass: nfs  # Ganti dengan StorageClass yang sesuai
+      accessMode: ReadWriteMany
+      volumeName: airflow-logs  # Nama volume yang dapat digunakan
+
