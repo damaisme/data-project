@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: airflow-ingress
+  namespace: airflow
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: nginx  # Sesuaikan dengan ingress class yang kamu pakai
+spec:
+  rules:
+  - host: airflow.ngoprek.my.id  # Ganti dengan domainmu
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: airflow-webserver  # Sesuaikan dengan nama service Airflow
+            port:
+              number: 8080  # Sesuaikan dengan port service Airflow
+
