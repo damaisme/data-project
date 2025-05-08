@@ -10,6 +10,17 @@ spec:
     chart: airflow
     targetRevision: 1.13.0
     helm:
+      values: |
+        executor: KubernetesExecutor
+        createUserJob:
+          useHelmHooks: false
+          applyCustomEnv: false
+        migrateDatabaseJob:
+          useHelmHooks: false
+          applyCustomEnv: false
+        migrateDatabaseJob:
+          jobAnnotations:
+            "argocd.argoproj.io/hook": Sync
       valueFiles:
         - values.yaml
   destination:
